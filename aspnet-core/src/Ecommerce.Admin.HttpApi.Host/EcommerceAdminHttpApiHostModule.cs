@@ -81,10 +81,10 @@ public class EcommerceAdminHttpApiHostModule : AbpModule
                         $"..{Path.DirectorySeparatorChar}Ecommerce.Domain"));
                 options.FileSets.ReplaceEmbeddedByPhysical<EcommerceAdminApplicationContractsModule>(
                     Path.Combine(hostingEnvironment.ContentRootPath,
-                        $"..{Path.DirectorySeparatorChar}Ecommerce.Application.Contracts"));
+                        $"..{Path.DirectorySeparatorChar}Ecommerce.Admin.Application.Contracts"));
                 options.FileSets.ReplaceEmbeddedByPhysical<EcommerceAdminApplicationModule>(
                     Path.Combine(hostingEnvironment.ContentRootPath,
-                        $"..{Path.DirectorySeparatorChar}Ecommerce.Application"));
+                        $"..{Path.DirectorySeparatorChar}Ecommerce.Admin.Application"));
             });
         }
     }
@@ -118,7 +118,7 @@ public class EcommerceAdminHttpApiHostModule : AbpModule
             },
             options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Ecommerce API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Ecommerce Admin API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
             });
@@ -156,7 +156,7 @@ public class EcommerceAdminHttpApiHostModule : AbpModule
         IConfiguration configuration,
         IWebHostEnvironment hostingEnvironment)
     {
-        var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("Ecommerce");
+        var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("Ecommerce.Admin");
         if (!hostingEnvironment.IsDevelopment())
         {
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
@@ -225,7 +225,7 @@ public class EcommerceAdminHttpApiHostModule : AbpModule
         app.UseSwagger();
         app.UseAbpSwaggerUI(options =>
         {
-            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Ecommerce API");
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Ecommerce Admin API");
 
             var configuration = context.GetConfiguration();
             options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
