@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Attributes
 {
-    public enum AttributeType
+    public enum ProductAttributeType
     {
         Date,
         Varchar,

@@ -7,6 +7,6 @@ namespace Ecommerce.Products
     {
         public Guid AttributeId { get; set; }
         public Guid ProductId { get; set; }
-        public DateTime Value { get; set; }
+        public DateTime? Value { get; set; }
     }
 }
