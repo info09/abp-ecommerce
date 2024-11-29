@@ -1,10 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using Ecommerce.Data;
+using Ecommerce.Seeding;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Ecommerce.Data;
 using Serilog;
+using System.Threading;
+using System.Threading.Tasks;
 using Volo.Abp;
 
 namespace Ecommerce.DbMigrator;
@@ -24,9 +25,9 @@ public class DbMigratorHostedService : IHostedService
     {
         using (var application = await AbpApplicationFactory.CreateAsync<EcommerceDbMigratorModule>(options =>
         {
-           options.Services.ReplaceConfiguration(_configuration);
-           options.UseAutofac();
-           options.Services.AddLogging(c => c.AddSerilog());
+            options.Services.ReplaceConfiguration(_configuration);
+            options.UseAutofac();
+            options.Services.AddLogging(c => c.AddSerilog());
         }))
         {
             await application.InitializeAsync();
@@ -35,6 +36,8 @@ public class DbMigratorHostedService : IHostedService
                 .ServiceProvider
                 .GetRequiredService<EcommerceDbMigrationService>()
                 .MigrateAsync();
+
+            await application.ServiceProvider.GetRequiredService<IdentityDataSeeder>().SeedAsync("huytq@ics-p.vn", "Admin@123$");
 
             await application.ShutdownAsync();
 
