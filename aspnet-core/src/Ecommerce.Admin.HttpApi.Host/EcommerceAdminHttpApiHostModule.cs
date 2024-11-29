@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using Ecommerce.EntityFrameworkCore;
+using Ecommerce.MultiTenancy;
 using Medallion.Threading;
 using Medallion.Threading.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,10 +10,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Ecommerce.EntityFrameworkCore;
-using Ecommerce.MultiTenancy;
-using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
@@ -163,7 +163,7 @@ public class EcommerceAdminHttpApiHostModule : AbpModule
             dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "Ecommerce-Protection-Keys");
         }
     }
-    
+
     private void ConfigureDistributedLocking(
         ServiceConfigurationContext context,
         IConfiguration configuration)
@@ -229,7 +229,7 @@ public class EcommerceAdminHttpApiHostModule : AbpModule
 
             var configuration = context.GetConfiguration();
             options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
-            options.OAuthScopes("Ecommerce");
+            options.OAuthScopes("Ecommerce.Admin");
         });
 
         app.UseAuditing();

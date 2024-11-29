@@ -10,17 +10,17 @@ export const environment = {
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'https://localhost:44383/',
+    issuer: 'https://localhost:5000/',
     redirectUri: baseUrl,
-    clientId: 'Ecommerce_App',
+    clientId: 'Ecommerce_Admin',
     responseType: 'code',
-    scope: 'offline_access Ecommerce',
+    scope: 'offline_access Ecommerce.Admin',
     requireHttps: true,
   },
   apis: {
     default: {
-      url: 'https://localhost:44315',
-      rootNamespace: 'Ecommerce',
+      url: 'https://localhost:5001',
+      rootNamespace: 'Ecommerce.Admin',
     },
   },
 } as Environment;
