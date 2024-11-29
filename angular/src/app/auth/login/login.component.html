@@ -31,12 +31,13 @@
           <div class="text-900 text-3xl font-medium mb-3">Xin chào quản trị!</div>
           <span class="text-600 font-medium">Đăng nhập</span>
         </div>
-        <div class="w-full md:w-10 mx-auto">
+        <div class="w-full md:w-10 mx-auto" [formGroup]="loginForm">
           <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
           <input
             id="email1"
+            formControlName="username"
             type="text"
-            placeholder="Email address"
+            placeholder="Địa chỉ email"
             pInputText
             class="w-full mb-3"
             style="padding: 1rem"
@@ -44,12 +45,18 @@
           <label for="password1" class="block text-900 font-medium text-xl mb-2">Mật khẩu</label>
           <p-password
             id="password1"
-            [(ngModel)]="password"
-            placeholder="Password"
+            formControlName="password"
+            placeholder="Mật khẩu"
             [toggleMask]="true"
             styleClass="w-full mb-3"
           ></p-password>
-          <button pButton pRipple label="Đăng nhập" class="w-full p-3 text-xl"></button>
+          <button
+            pButton
+            pRipple
+            (click)="login()"
+            label="Đăng nhập"
+            class="w-full p-3 text-xl"
+          ></button>
         </div>
       </div>
     </div>
