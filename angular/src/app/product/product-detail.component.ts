@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProductCategoriesService, ProductCategoryInListDto } from '@proxy/product-categories';
 import { ProductDto, ProductsService } from '@proxy/products';
@@ -8,6 +8,7 @@ import { ManufacturerInListDto, ManufacturersService } from '@proxy/manufacturer
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { productTypeOptions } from '@proxy/ecommerce/products';
 import { NotificationService } from '../shared/services/notification.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-product-detail',
@@ -18,6 +19,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   blockedPanel: boolean = false;
   public form: FormGroup;
   btnDisabled = false;
+  public thumbnailImage;
 
   productCategories: any[] = [];
   manufacturers: any[] = [];
@@ -33,7 +35,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private config: DynamicDialogConfig,
     private ref: DynamicDialogRef,
     private utilityService: UtilityService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private cd: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
   ) {}
 
   validationMessages = {
@@ -51,7 +55,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     sellPrice: [{ type: 'required', message: 'Bạn phải nhập giá bán' }],
   };
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    if (this.ref) {
+      this.ref.close();
+    }
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
   ngOnInit(): void {
     this.buildForm();
     this.loadProductType();
@@ -112,12 +122,44 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: ProductDto) => {
           this.selectedEntity = res;
+          this.loadThumbnail(this.selectedEntity.thumbnailPicture);
           this.buildForm();
           this.toggleBlockUI(false);
         },
         error: err => {
           this.toggleBlockUI(false);
           this.notificationService.showError(err.error.error.message);
+        },
+      });
+  }
+
+  onFileChange(event) {
+    const reader = new FileReader();
+    if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.form.patchValue({
+          thumbnailPictureName: file.name,
+          thumbnailPictureContent: reader.result,
+        });
+
+        // need to run CD since file load runs outside of zone
+        this.cd.markForCheck();
+      };
+    }
+  }
+
+  loadThumbnail(fileName: string) {
+    this.productService
+      .getThumbnailImage(fileName)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: (response: string) => {
+          var fileExt = this.selectedEntity.thumbnailPicture?.split('.').pop();
+          this.thumbnailImage = this.sanitizer.bypassSecurityTrustResourceUrl(
+            `data:image/${fileExt};base64, ${response}`
+          );
         },
       });
   }
@@ -180,6 +222,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       isActive: new FormControl(this.selectedEntity.isActive || false),
       seoMetaDescription: new FormControl(this.selectedEntity.seoMetaDescription || null),
       description: new FormControl(this.selectedEntity.description || null),
+      thumbnailPictureName: new FormControl(this.selectedEntity.description || null),
+      thumbnailPictureContent: new FormControl(null),
     });
   }
 

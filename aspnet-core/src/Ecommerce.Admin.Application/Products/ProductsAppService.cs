@@ -96,7 +96,7 @@ namespace Ecommerce.Admin.Products
             query = query.WhereIf(filter.CategoryId.HasValue, i => i.CategoryId == filter.CategoryId.Value);
 
             var totalCount = await AsyncExecuter.LongCountAsync(query);
-            var data = await AsyncExecuter.ToListAsync(query.Skip(filter.SkipCount).Take(filter.MaxResultCount));
+            var data = await AsyncExecuter.ToListAsync(query.OrderByDescending(i => i.CreationTime).Skip(filter.SkipCount).Take(filter.MaxResultCount));
 
             return new PagedResultDto<ProductInListDto>(totalCount, ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data));
         }
@@ -107,6 +107,18 @@ namespace Ecommerce.Admin.Products
             base64 = regex.Replace(base64, string.Empty);
             byte[] bytes = Convert.FromBase64String(base64);
             await _fileContainer.SaveAsync(fileName, bytes, overrideExisting: true);
+        }
+
+        public async Task<string> GetThumbnailImageAsync(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName)) return null;
+
+            var thumbnaiContent = await _fileContainer.GetAllBytesAsync(fileName);
+
+            if (thumbnaiContent == null) return null;
+
+            var result = Convert.ToBase64String(thumbnaiContent);
+            return result;
         }
     }
 }
