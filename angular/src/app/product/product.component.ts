@@ -1,8 +1,11 @@
 import { PagedResultDto } from '@abp/ng.core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductCategoriesService, ProductCategoryInListDto } from '@proxy/product-categories';
-import { ProductInListDto, ProductsService } from '@proxy/products';
+import { ProductDto, ProductInListDto, ProductsService } from '@proxy/products';
+import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../shared/services/notification.service';
+import { ProductDetailComponent } from './product-detail.component';
 
 @Component({
   selector: 'app-product',
@@ -26,7 +29,9 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductsService,
-    private productCategoryService: ProductCategoriesService
+    private productCategoryService: ProductCategoriesService,
+    private dialogService: DialogService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnDestroy(): void {
@@ -89,5 +94,19 @@ export class ProductComponent implements OnInit, OnDestroy {
         this.blockedPanel = false;
       }, 1000);
     }
+  }
+
+  showAddModal() {
+    const ref = this.dialogService.open(ProductDetailComponent, {
+      header: 'Thêm mới sản phẩm',
+      width: '70%',
+    });
+
+    ref.onClose.subscribe((data: ProductDto) => {
+      if (data) {
+        this.loadData();
+        this.notificationService.showSuccess('Thêm mới sản phẩm thành công');
+      }
+    });
   }
 }
