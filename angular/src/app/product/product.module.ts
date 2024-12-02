@@ -9,7 +9,7 @@ import { ProductComponent } from './product.component';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -22,6 +22,7 @@ import { InputTextModule } from 'primeng/inputtext';
     DropdownModule,
     InputTextModule,
     ProductRoutingModule,
+    ProgressSpinnerModule,
   ],
 })
 export class ProductModule {}
