@@ -12,6 +12,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   blockedPanel: boolean = false;
   public form: FormGroup;
+  btnDisabled = false;
 
   productCategories: any[] = [];
   manufacturers: any[] = [];
@@ -29,6 +30,21 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.buildForm();
   }
+
+  validationMessages = {
+    code: [{ type: 'required', message: 'Bạn phải nhập mã duy nhất' }],
+    name: [
+      { type: 'required', message: 'Bạn phải nhập tên' },
+      { type: 'maxlength', message: 'Bạn không được nhập quá 255 kí tự' },
+    ],
+    slug: [{ type: 'required', message: 'Bạn phải URL duy nhất' }],
+    sku: [{ type: 'required', message: 'Bạn phải mã SKU sản phẩm' }],
+    manufacturerId: [{ type: 'required', message: 'Bạn phải chọn nhà cung cấp' }],
+    categoryId: [{ type: 'required', message: 'Bạn phải chọn danh mục' }],
+    productType: [{ type: 'required', message: 'Bạn phải chọn loại sản phẩm' }],
+    sortOrder: [{ type: 'required', message: 'Bạn phải nhập thứ tự' }],
+    sellPrice: [{ type: 'required', message: 'Bạn phải nhập giá bán' }],
+  };
 
   private buildForm() {
     this.form = this.fb.group({
