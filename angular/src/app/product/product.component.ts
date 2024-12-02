@@ -6,6 +6,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../shared/services/notification.service';
 import { ProductDetailComponent } from './product-detail.component';
+import { ProductType } from '@proxy/ecommerce/products';
 
 @Component({
   selector: 'app-product',
@@ -87,6 +88,29 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
+  showEditModal() {
+    if (this.selectedItems.length == 0) {
+      this.notificationService.showError('Bạn phải chọn một bản ghi');
+      return;
+    }
+    const id = this.selectedItems[0].id;
+    const ref = this.dialogService.open(ProductDetailComponent, {
+      data: {
+        id: id,
+      },
+      header: 'Cập nhật sản phẩm',
+      width: '70%',
+    });
+
+    ref.onClose.subscribe((data: ProductDto) => {
+      if (data) {
+        this.loadData();
+        this.selectedItems = [];
+        this.notificationService.showSuccess('Thêm sản phẩm thành công');
+      }
+    });
+  }
+
   private toggleBlockUI(enabled: boolean) {
     if (enabled == true) {
       this.blockedPanel = true;
@@ -95,6 +119,10 @@ export class ProductComponent implements OnInit, OnDestroy {
         this.blockedPanel = false;
       }, 1000);
     }
+  }
+
+  getProductTypeName(value: number) {
+    return ProductType[value];
   }
 
   showAddModal() {

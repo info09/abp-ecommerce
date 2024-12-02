@@ -11,6 +11,16 @@ namespace Ecommerce.Admin.Products
 {
     public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, PagedResultRequestDto, CreateUpdateProductDto, CreateUpdateProductDto>, IProductsAppService
     {
+        public override Task<ProductDto> CreateAsync(CreateUpdateProductDto input)
+        {
+            return base.CreateAsync(input);
+        }
+
+        public override Task<ProductDto> UpdateAsync(Guid id, CreateUpdateProductDto input)
+        {
+            return base.UpdateAsync(id, input);
+        }
+
         public ProductsAppService(IRepository<Product, Guid> repository) : base(repository)
         {
         }
