@@ -16,6 +16,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   blockedPanel: boolean = false;
   items: ProductInListDto[] = [];
+  public selectedItems: ProductInListDto[] = [];
 
   //Paging variables
   public skipCount: number = 0;
@@ -81,7 +82,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event: any): void {
-    this.skipCount = (event.page - 1) * this.maxResultCount;
+    this.skipCount = event.page * this.maxResultCount;
     this.maxResultCount = event.rows;
     this.loadData();
   }
@@ -106,6 +107,7 @@ export class ProductComponent implements OnInit, OnDestroy {
       if (data) {
         this.loadData();
         this.notificationService.showSuccess('Thêm mới sản phẩm thành công');
+        this.selectedItems = [];
       }
     });
   }
