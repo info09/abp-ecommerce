@@ -7,6 +7,7 @@ import { UtilityService } from '../shared/services/utility.service';
 import { ManufacturerInListDto, ManufacturersService } from '@proxy/manufacturers';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { productTypeOptions } from '@proxy/ecommerce/products';
+import { NotificationService } from '../shared/services/notification.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -31,7 +32,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private config: DynamicDialogConfig,
     private ref: DynamicDialogRef,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private notificationService: NotificationService
   ) {}
 
   validationMessages = {
@@ -115,6 +117,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         },
         error: err => {
           this.toggleBlockUI(false);
+          this.notificationService.showError(err.error.error.message);
         },
       });
   }
@@ -130,8 +133,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
             this.toggleBlockUI(false);
             this.ref.close(this.form.value);
           },
-          error: () => {
+          error: err => {
             this.toggleBlockUI(false);
+            this.notificationService.showError(err.error.error.message);
           },
         });
     } else {
