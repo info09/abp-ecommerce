@@ -29,10 +29,11 @@ namespace Ecommerce.Admin.Products
             return ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data);
         }
 
-        public async Task<PagedResultDto<ProductInListDto>> GetListFilterAsync(BaseListFilterDto filter)
+        public async Task<PagedResultDto<ProductInListDto>> GetListFilterAsync(ProductListFilter filter)
         {
             var query = await Repository.GetQueryableAsync();
             query = query.WhereIf(string.IsNullOrEmpty(filter.Keyword), i => i.Name.ToLower().Contains(filter.Keyword.ToLower()));
+            query = query.WhereIf(filter.CategoryId.HasValue, i => i.CategoryId == filter.CategoryId.Value);
 
             var totalCount = await AsyncExecuter.LongCountAsync(query);
             var data = await AsyncExecuter.ToListAsync(query.Skip(filter.SkipCount).Take(filter.MaxResultCount));

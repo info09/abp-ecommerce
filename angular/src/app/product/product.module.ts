@@ -6,6 +6,9 @@ import { PaginatorModule } from 'primeng/paginator';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [ProductComponent],
@@ -15,6 +18,9 @@ import { ProductComponent } from './product.component';
     PanelModule,
     PaginatorModule,
     BlockUIModule,
+    ButtonModule,
+    DropdownModule,
+    InputTextModule,
     ProductRoutingModule,
   ],
 })

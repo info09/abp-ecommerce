@@ -1,6 +1,9 @@
-﻿namespace Ecommerce.Admin.ProductCategories
+﻿using System;
+using Volo.Abp.Application.Dtos;
+
+namespace Ecommerce.Admin.ProductCategories
 {
-    public class ProductCategoryInListDto
+    public class ProductCategoryInListDto : EntityDto<Guid>
     {
         public string Name { get; set; }
         public string Code { get; set; }

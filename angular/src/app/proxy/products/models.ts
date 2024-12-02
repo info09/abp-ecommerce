@@ -1,5 +1,6 @@
 import type { ProductType } from '../ecommerce/products/product-type.enum';
 import type { EntityDto } from '@abp/ng.core';
+import type { BaseListFilterDto } from '../models';
 
 export interface CreateUpdateProductDto {
   manufacturerId?: string;
@@ -42,4 +43,8 @@ export interface ProductInListDto extends EntityDto<string> {
   isActive: boolean;
   categoryId?: string;
   thumbnailPicture?: string;
+}
+
+export interface ProductListFilter extends BaseListFilterDto {
+  categoryId?: string;
 }
