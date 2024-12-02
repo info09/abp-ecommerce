@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Ecommerce.Admin.Manufacturers;
 using Ecommerce.Admin.ProductCategories;
 using Ecommerce.Admin.Products;
+using Ecommerce.Manufacturers;
 using Ecommerce.ProductCategories;
 using Ecommerce.Products;
 
@@ -22,5 +24,9 @@ public class EcommerceAdminApplicationAutoMapperProfile : Profile
         CreateMap<Product, ProductDto>();
         CreateMap<Product, ProductInListDto>();
         CreateMap<CreateUpdateProductDto, Product>();
+
+        CreateMap<Manufacturer, ManufacturerDto>();
+        CreateMap<Manufacturer, ManufacturerInListDto>();
+        CreateMap<CreateUpdateManufacturerDto, Manufacturer>();
     }
 }

@@ -74,7 +74,7 @@ export class ProductComponent implements OnInit, OnDestroy {
         res.forEach(element => {
           this.productCategories.push({
             value: element.id,
-            name: element.name,
+            label: element.name,
           });
         });
       });

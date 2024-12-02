@@ -2,7 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProductCategoriesService, ProductCategoryInListDto } from '@proxy/product-categories';
 import { ProductDto, ProductsService } from '@proxy/products';
-import { Subject, takeUntil } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { UtilityService } from '../shared/services/utility.service';
+import { ManufacturerInListDto, ManufacturersService } from '@proxy/manufacturers';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { productTypeOptions } from '@proxy/ecommerce/products';
 
 @Component({
   selector: 'app-product-detail',
@@ -23,13 +27,12 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   constructor(
     private productService: ProductsService,
     private productCategoryService: ProductCategoriesService,
-    private fb: FormBuilder
+    private manufacturerService: ManufacturersService,
+    private fb: FormBuilder,
+    private config: DynamicDialogConfig,
+    private ref: DynamicDialogRef,
+    private utilityService: UtilityService
   ) {}
-
-  ngOnDestroy(): void {}
-  ngOnInit(): void {
-    this.buildForm();
-  }
 
   validationMessages = {
     code: [{ type: 'required', message: 'Bạn phải nhập mã duy nhất' }],
@@ -45,6 +48,83 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     sortOrder: [{ type: 'required', message: 'Bạn phải nhập thứ tự' }],
     sellPrice: [{ type: 'required', message: 'Bạn phải nhập giá bán' }],
   };
+
+  ngOnDestroy(): void {}
+  ngOnInit(): void {
+    this.buildForm();
+    this.loadProductType();
+
+    //Load data to form
+    var productCategories = this.productCategoryService.getListAll();
+    var manufacturers = this.manufacturerService.getListAll();
+
+    this.toggleBlockUI(true);
+    forkJoin({ productCategories, manufacturers })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: (res: any) => {
+          var productCategories = res.productCategories as ProductCategoryInListDto[];
+          var manufacturers = res.manufacturers as ManufacturerInListDto[];
+
+          productCategories.forEach(element => {
+            this.productCategories.push({
+              value: element.id,
+              label: element.name,
+            });
+          });
+
+          manufacturers.forEach(element => {
+            this.manufacturers.push({
+              value: element.id,
+              label: element.name,
+            });
+          });
+
+          if (this.utilityService.isEmpty(this.config.data?.id) == true) {
+            this.toggleBlockUI(true);
+          } else {
+            this.loadFormDetails(this.config.data?.id);
+          }
+          this.toggleBlockUI(false);
+        },
+        error: () => {
+          this.toggleBlockUI(false);
+        },
+      });
+  }
+
+  generateSlug() {
+    this.form.controls['slug'].setValue(
+      this.utilityService.MakeSeoTitle(this.form.get('name').value)
+    );
+  }
+
+  loadFormDetails(id: string) {
+    this.toggleBlockUI(true);
+    this.productService
+      .get(id)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: (res: ProductDto) => {
+          this.selectedEntity = res;
+          this.buildForm();
+          this.toggleBlockUI(false);
+        },
+        error: err => {
+          this.toggleBlockUI(false);
+        },
+      });
+  }
+
+  saveChange() {}
+  loadProductType() {
+    productTypeOptions.forEach(element => {
+      this.productTypes.push({
+        value: element.value,
+        label: element.key,
+      });
+    });
+  }
 
   private buildForm() {
     this.form = this.fb.group({
@@ -75,35 +155,5 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         this.blockedPanel = false;
       }, 1000);
     }
-  }
-
-  loadFormDetails(id: string) {
-    this.toggleBlockUI(true);
-    this.productService
-      .get(id)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe({
-        next: (res: ProductDto) => {
-          this.selectedEntity = res;
-          this.buildForm();
-          this.toggleBlockUI(false);
-        },
-        error: err => {
-          this.toggleBlockUI(false);
-        },
-      });
-  }
-
-  saveChange() {}
-
-  loadProductCategories() {
-    this.productCategoryService.getListAll().subscribe((res: ProductCategoryInListDto[]) => {
-      res.forEach(element => {
-        this.productCategories.push({
-          value: element.id,
-          name: element.name,
-        });
-      });
-    });
   }
 }
