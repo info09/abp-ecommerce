@@ -13,10 +13,11 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
   },
-  // {
-  //   path: 'identity',
-  //   loadChildren: () => import('@abp/ng.identity').then(m => m.IdentityModule.forLazy()),
-  // },
+  {
+    path: 'product',
+    loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
+    component: AppLayoutComponent,
+  },
   // {
   //   path: 'tenant-management',
   //   loadChildren: () =>
