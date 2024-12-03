@@ -8,7 +8,7 @@ namespace Ecommerce.Admin.ProductAttributes
         {
             RuleFor(x => x.Label).NotEmpty().MaximumLength(50);
             RuleFor(x => x.Code).NotEmpty().MaximumLength(50);
-            RuleFor(x => x.DataType).NotNull();
+            RuleFor(x => x.ProductAttributeType).NotNull();
         }
     }
 }

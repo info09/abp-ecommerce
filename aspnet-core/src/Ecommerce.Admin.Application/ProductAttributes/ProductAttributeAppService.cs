@@ -21,7 +21,7 @@ namespace Ecommerce.Admin.ProductAttributes
             await UnitOfWorkManager.Current.SaveChangesAsync();
         }
 
-        public async Task<List<ProductAttributeInListDto>> GetAllAsync()
+        public async Task<List<ProductAttributeInListDto>> GetAllListAsync()
         {
             var query = await Repository.GetQueryableAsync();
             query = query.Where(i => i.IsActive);

@@ -3,7 +3,7 @@ import type { EntityDto } from '@abp/ng.core';
 
 export interface CreateUpdateProductAttributeDto {
   code?: string;
-  dataType: ProductAttributeType;
+  productAttributeType: ProductAttributeType;
   label?: string;
   sortOrder: number;
   visibility: boolean;
@@ -15,7 +15,7 @@ export interface CreateUpdateProductAttributeDto {
 
 export interface ProductAttributeDto {
   code?: string;
-  dataType: ProductAttributeType;
+  productAttributeType: ProductAttributeType;
   label?: string;
   sortOrder: number;
   visibility: boolean;
@@ -28,7 +28,7 @@ export interface ProductAttributeDto {
 
 export interface ProductAttributeInListDto extends EntityDto<string> {
   code?: string;
-  dataType: ProductAttributeType;
+  productAttributeType: ProductAttributeType;
   label?: string;
   sortOrder: number;
   visibility: boolean;

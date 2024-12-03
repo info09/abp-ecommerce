@@ -9,7 +9,7 @@ namespace Ecommerce.Admin.ProductAttributes
     public interface IProductAttributesAppService : ICrudAppService<ProductAttributeDto, Guid, PagedResultRequestDto, CreateUpdateProductAttributeDto, CreateUpdateProductAttributeDto>
     {
         Task<PagedResultDto<ProductAttributeInListDto>> GetListFilterAsync(BaseListFilterDto input);
-        Task<List<ProductAttributeInListDto>> GetAllAsync();
+        Task<List<ProductAttributeInListDto>> GetAllListAsync();
         Task DeleteMultiple(IEnumerable<Guid> ids);
     }
 }

@@ -18,6 +18,11 @@ const routes: Routes = [
     loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
     component: AppLayoutComponent,
   },
+  {
+    path: 'attribute',
+    loadChildren: () => import('./attribute/attribute.module').then(m => m.AttributeModule),
+    component: AppLayoutComponent,
+  },
   // {
   //   path: 'tenant-management',
   //   loadChildren: () =>

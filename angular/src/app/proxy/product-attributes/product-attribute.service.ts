@@ -45,10 +45,10 @@ export class ProductAttributeService {
     { apiName: this.apiName });
   
 
-  getAll = () =>
+  getAllList = () =>
     this.restService.request<any, ProductAttributeInListDto[]>({
       method: 'GET',
-      url: '/api/app/product-attribute',
+      url: '/api/app/product-attribute/list',
     },
     { apiName: this.apiName });
   

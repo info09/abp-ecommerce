@@ -7,7 +7,7 @@ namespace Ecommerce.Admin.ProductAttributes
     public class ProductAttributeDto : IEntityDto<Guid>
     {
         public string Code { get; set; }
-        public ProductAttributeType DataType { get; set; }
+        public ProductAttributeType ProductAttributeType { get; set; }
         public string Label { get; set; }
         public int SortOrder { get; set; }
         public bool Visibility { get; set; }
