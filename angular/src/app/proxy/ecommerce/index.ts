@@ -1,2 +1,3 @@
+import * as Attributes from './attributes';
 import * as Products from './products';
-export { Products };
+export { Attributes, Products };
