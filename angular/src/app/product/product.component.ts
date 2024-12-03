@@ -3,10 +3,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductCategoriesService, ProductCategoryInListDto } from '@proxy/product-categories';
 import { ProductDto, ProductInListDto, ProductsService } from '@proxy/products';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { NotificationService } from '../shared/services/notification.service';
 import { ProductDetailComponent } from './product-detail.component';
 import { ProductType } from '@proxy/ecommerce/products';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-product',
@@ -33,7 +34,8 @@ export class ProductComponent implements OnInit, OnDestroy {
     private productService: ProductsService,
     private productCategoryService: ProductCategoriesService,
     private dialogService: DialogService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnDestroy(): void {
@@ -134,9 +136,45 @@ export class ProductComponent implements OnInit, OnDestroy {
     ref.onClose.subscribe((data: ProductDto) => {
       if (data) {
         this.loadData();
-        this.notificationService.showSuccess('Thêm mới sản phẩm thành công');
+        this.notificationService.showSuccess('Cập nhật sản phẩm thành công');
         this.selectedItems = [];
       }
     });
+  }
+
+  deleteItems() {
+    if (this.selectedItems.length == 0) {
+      this.notificationService.showError('Phải chọn ít nhất 1 bản ghi');
+      return;
+    }
+
+    var ids = [];
+    this.selectedItems.forEach(element => {
+      ids.push(element.id);
+    });
+
+    this.confirmationService.confirm({
+      accept: () => {
+        this.deleteItemsConfirm(ids);
+      },
+    });
+  }
+
+  deleteItemsConfirm(ids: string[]) {
+    this.toggleBlockUI(true);
+    this.productService
+      .deleteMultiple(ids)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Xóa thành công');
+          this.loadData();
+          this.selectedItems = [];
+          this.toggleBlockUI(false);
+        },
+        error: () => {
+          this.toggleBlockUI(false);
+        },
+      });
   }
 }
