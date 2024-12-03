@@ -63,7 +63,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             });
         }
 
-        if (await _scopeManager.FindByNameAsync("TeduEcommerce.Admin") == null)
+        if (await _scopeManager.FindByNameAsync("Ecommerce.Admin") == null)
         {
             await _scopeManager.CreateAsync(new OpenIddictScopeDescriptor
             {

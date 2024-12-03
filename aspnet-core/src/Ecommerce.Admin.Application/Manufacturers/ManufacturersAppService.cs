@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Manufacturers;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Ecommerce.Admin.Manufacturers
 {
+    [Authorize]
     public class ManufacturersAppService : CrudAppService<Manufacturer, ManufacturerDto, Guid, PagedResultRequestDto, CreateUpdateManufacturerDto, CreateUpdateManufacturerDto>, IManufacturersAppService
     {
         public ManufacturersAppService(IRepository<Manufacturer, Guid> repository) : base(repository)

@@ -31,7 +31,8 @@
           <div class="text-900 text-3xl font-medium mb-3">Xin chào quản trị!</div>
           <span class="text-600 font-medium">Đăng nhập</span>
         </div>
-        <div class="w-full md:w-10 mx-auto" [formGroup]="loginForm">
+
+        <form class="w-full md:w-10 mx-auto" [formGroup]="loginForm">
           <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
           <input
             id="email1"
@@ -42,6 +43,7 @@
             class="w-full mb-3"
             style="padding: 1rem"
           />
+
           <label for="password1" class="block text-900 font-medium text-xl mb-2">Mật khẩu</label>
           <p-password
             id="password1"
@@ -50,6 +52,7 @@
             [toggleMask]="true"
             styleClass="w-full mb-3"
           ></p-password>
+
           <button
             pButton
             pRipple
@@ -57,7 +60,10 @@
             label="Đăng nhập"
             class="w-full p-3 text-xl"
           ></button>
-        </div>
+        </form>
+        <p-blockUI [blocked]="blockedPanel">
+          <p-progressSpinner></p-progressSpinner>
+        </p-blockUI>
       </div>
     </div>
   </div>

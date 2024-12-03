@@ -1,5 +1,6 @@
 ﻿using Ecommerce.ProductCategories;
 using Ecommerce.Products;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Ecommerce.Admin.Products
 {
+    [Authorize]
     public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, PagedResultRequestDto, CreateUpdateProductDto, CreateUpdateProductDto>, IProductsAppService
     {
         private readonly ProductManager _productManager;

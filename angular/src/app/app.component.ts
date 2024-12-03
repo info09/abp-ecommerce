@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
 import { AuthService } from './shared/services/auth.service';
 import { LOGIN_URL } from './shared/constants/key.constant';
+import { TokenStorageService } from './shared/services/token.service';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,7 @@ export class AppComponent {
   menuMode = 'static';
   constructor(
     private primengConfig: PrimeNGConfig,
-    private authService: AuthService,
+    private tokenService: TokenStorageService,
     private router: Router
   ) {}
 
@@ -29,7 +30,7 @@ export class AppComponent {
     this.primengConfig.ripple = true;
     document.documentElement.style.fontSize = '14px';
 
-    if (this.authService.isAuthenticated() == false) {
+    if (this.tokenService.getToken() == null) {
       this.router.navigate([LOGIN_URL]);
     }
   }
