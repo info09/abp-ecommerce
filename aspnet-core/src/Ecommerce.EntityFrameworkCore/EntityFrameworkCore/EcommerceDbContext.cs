@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Attributes;
+using Ecommerce.Configurations.IdentitySettings;
 using Ecommerce.Configurations.Inventories;
 using Ecommerce.Configurations.InventorryTickets;
 using Ecommerce.Configurations.Manufacturers;
@@ -7,6 +8,7 @@ using Ecommerce.Configurations.ProductAttributes;
 using Ecommerce.Configurations.ProductCategories;
 using Ecommerce.Configurations.Products;
 using Ecommerce.Configurations.Promotions;
+using Ecommerce.IdentitySettings;
 using Ecommerce.Inventories;
 using Ecommerce.InventoryTickets;
 using Ecommerce.Manufacturers;
@@ -91,7 +93,7 @@ public class EcommerceDbContext :
     public DbSet<PromotionManufacturer> PromotionManufacturers { get; set; }
     public DbSet<PromotionProduct> PromotionProducts { get; set; }
     public DbSet<PromotionUsageHistory> PromotionUsageHistories { get; set; }
-
+    public DbSet<IdentitySetting> IdentitySettings { get; set; }
     #endregion
 
     public EcommerceDbContext(DbContextOptions<EcommerceDbContext> options)
@@ -139,6 +141,6 @@ public class EcommerceDbContext :
         builder.ApplyConfiguration(new PromotionManufacturerConfiguration());
         builder.ApplyConfiguration(new PromotionProductConfiguration());
         builder.ApplyConfiguration(new PromotionUsageHistoryConfiguration());
-
+        builder.ApplyConfiguration(new IdentitySettingConfiguration());
     }
 }

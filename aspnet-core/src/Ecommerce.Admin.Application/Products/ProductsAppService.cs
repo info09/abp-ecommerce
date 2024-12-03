@@ -20,12 +20,14 @@ namespace Ecommerce.Admin.Products
         private readonly ProductManager _productManager;
         private readonly IRepository<ProductCategory> _productCategoryRepository;
         private readonly IBlobContainer<ProductThumbnailPictureContainer> _fileContainer;
+        private readonly ProductCodeGenerator _productCodeGenerator;
 
-        public ProductsAppService(IRepository<Product, Guid> repository, ProductManager productManager, IRepository<ProductCategory> productCategoryRepository, IBlobContainer<ProductThumbnailPictureContainer> thumbnailPictureContainer) : base(repository)
+        public ProductsAppService(IRepository<Product, Guid> repository, ProductManager productManager, IRepository<ProductCategory> productCategoryRepository, IBlobContainer<ProductThumbnailPictureContainer> thumbnailPictureContainer, ProductCodeGenerator productCodeGenerator) : base(repository)
         {
             _productManager = productManager;
             _productCategoryRepository = productCategoryRepository;
             _fileContainer = thumbnailPictureContainer;
+            _productCodeGenerator = productCodeGenerator;
         }
 
         public override async Task<ProductDto> CreateAsync(CreateUpdateProductDto input)
@@ -121,6 +123,11 @@ namespace Ecommerce.Admin.Products
 
             var result = Convert.ToBase64String(thumbnaiContent);
             return result;
+        }
+
+        public async Task<string> GetSuggestNewCodeAsync()
+        {
+            return await _productCodeGenerator.GenerateAsync();
         }
     }
 }
