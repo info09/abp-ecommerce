@@ -23,6 +23,11 @@ const routes: Routes = [
     loadChildren: () => import('./attribute/attribute.module').then(m => m.AttributeModule),
     component: AppLayoutComponent,
   },
+  {
+    path: 'role',
+    loadChildren: () => import('./role/role.module').then(m => m.RoleModule),
+    component: AppLayoutComponent,
+  },
   // {
   //   path: 'tenant-management',
   //   loadChildren: () =>

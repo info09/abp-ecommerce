@@ -40,9 +40,17 @@ public class EcommerceAdminApplicationAutoMapperProfile : Profile
         CreateMap<CreateUpdateProductAttributeDto, ProductAttribute>();
 
         //Role
-        CreateMap<IdentityRole, RoleDto>().ForMember(i => i.Description,
-            map => map.MapFrom(x => x.ExtraProperties.ContainsKey(RoleConsts.DescriptionFieldName) ?
-            x.ExtraProperties[RoleConsts.DescriptionFieldName] :
+        CreateMap<IdentityRole, RoleDto>().ForMember(x => x.Description,
+            map => map.MapFrom(x => x.ExtraProperties.ContainsKey(RoleConsts.DescriptionFieldName)
+            ?
+            x.ExtraProperties[RoleConsts.DescriptionFieldName]
+            :
+            null));
+        CreateMap<IdentityRole, RoleInListDto>().ForMember(x => x.Description,
+            map => map.MapFrom(x => x.ExtraProperties.ContainsKey(RoleConsts.DescriptionFieldName)
+            ?
+            x.ExtraProperties[RoleConsts.DescriptionFieldName]
+            :
             null));
         CreateMap<CreateUpdateRoleDto, IdentityRole>();
     }

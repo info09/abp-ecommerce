@@ -59,7 +59,7 @@ namespace Ecommerce.Admin.Roles
             var role = await Repository.GetAsync(id) ?? throw new EntityNotFoundException(typeof(IdentityRole), id);
 
             var query = await Repository.GetQueryableAsync();
-            var isNameExisted = query.Any(i => i.Name == input.Name);
+            var isNameExisted = query.Any(i => i.Name == input.Name && i.Id != id);
             if (isNameExisted)
                 throw new BusinessException(EcommerceDomainErrorCodes.RoleNameAlreadyExists).WithData("Name", input.Name);
 
