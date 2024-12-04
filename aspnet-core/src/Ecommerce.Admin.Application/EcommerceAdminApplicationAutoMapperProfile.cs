@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using Ecommerce.Admin.Manufacturers;
-using Ecommerce.Admin.ProductAttributes;
-using Ecommerce.Admin.ProductCategories;
-using Ecommerce.Admin.Products;
-using Ecommerce.Admin.Roles;
+using Ecommerce.Admin.Catalog.Manufacturers;
+using Ecommerce.Admin.Catalog.ProductAttributes;
+using Ecommerce.Admin.Catalog.ProductCategories;
+using Ecommerce.Admin.Catalog.Products;
+using Ecommerce.Admin.System.Roles;
+using Ecommerce.Admin.System.Users;
 using Ecommerce.Attributes;
 using Ecommerce.Manufacturers;
 using Ecommerce.ProductCategories;
@@ -53,5 +54,9 @@ public class EcommerceAdminApplicationAutoMapperProfile : Profile
             :
             null));
         CreateMap<CreateUpdateRoleDto, IdentityRole>();
+
+        //User
+        CreateMap<IdentityUser, UserDto>();
+        CreateMap<IdentityUser, UserInListDto>();
     }
 }
