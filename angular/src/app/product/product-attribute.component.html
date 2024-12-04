@@ -43,11 +43,12 @@
   </ng-template>
   <ng-template pTemplate="body" let-row>
     <tr>
+      <td>{{ row.code }}</td>
       <td>
         {{ row.label }}
       </td>
-      <td>{{ getDataTypeName(row.dataType) }}</td>
-      <td>{{ getValueByType(row, row.dataType) }}</td>
+      <td>{{ getDataTypeName(row.productAttributeType) }}</td>
+      <td>{{ getValueByType(row, row.productAttributeType) }}</td>
       <td>
         <button
           pButton

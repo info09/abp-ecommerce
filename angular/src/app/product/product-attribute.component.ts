@@ -7,6 +7,7 @@ import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../shared/services/notification.service';
 import { ConfirmationService } from 'primeng/api';
 import { ProductAttributeValueDto } from '@proxy/products/attributes';
+import { ProductAttributeType } from '@proxy/ecommerce/attributes';
 
 @Component({
   selector: 'app-product-attribute',
@@ -96,7 +97,95 @@ export class ProductAttributeComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveChange() {}
+  saveChange() {
+    this.toggleBlockUI(true);
+    var selectedAttributeId = this.form.controls['attributeId'].value;
+    var dataType = this.fullAttributes.filter(x => x.id == selectedAttributeId)[0]
+      .productAttributeType;
+    console.log(dataType);
+    var value = this.form.controls['attributeValue'].value;
+    if (dataType == ProductAttributeType.Date) {
+      this.form.controls['dateTimeValue'].setValue(value);
+    } else if (dataType == ProductAttributeType.Decimal) {
+      this.form.controls['decimalValue'].setValue(value);
+    } else if (dataType == ProductAttributeType.Int) {
+      this.form.controls['intValue'].setValue(value);
+    } else if (dataType == ProductAttributeType.Text) {
+      this.form.controls['textValue'].setValue(value);
+    } else if (dataType == ProductAttributeType.Varchar) {
+      this.form.controls['varcharValue'].setValue(value);
+    }
+    this.productService
+      .addProductAttribute(this.form.value)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: () => {
+          this.toggleBlockUI(false);
+          this.loadFormDetails(this.config.data.id);
+        },
+        error: err => {
+          this.notificationService.showError(err.error.error.message);
+          this.toggleBlockUI(false);
+        },
+      });
+  }
+
+  getDataTypeName(value: number) {
+    return ProductAttributeType[value];
+  }
+
+  getValueByType(attribute: ProductAttributeValueDto, value: number) {
+    if (attribute.productAttributeType == ProductAttributeType.Date) {
+      return attribute.dateTimeValue;
+    } else if (attribute.productAttributeType == ProductAttributeType.Decimal) {
+      return attribute.decimalValue;
+    } else if (attribute.productAttributeType == ProductAttributeType.Int) {
+      return attribute.intValue;
+    } else if (attribute.productAttributeType == ProductAttributeType.Text) {
+      return attribute.textValue;
+    } else if (attribute.productAttributeType == ProductAttributeType.Varchar) {
+      return attribute.varcharValue;
+    }
+  }
+
+  removeItem(attribute: ProductAttributeValueDto) {
+    var id = '';
+    if (attribute.productAttributeType == ProductAttributeType.Date) {
+      id = attribute.dateTimeId;
+    } else if (attribute.productAttributeType == ProductAttributeType.Decimal) {
+      id = attribute.decimalId;
+    } else if (attribute.productAttributeType == ProductAttributeType.Int) {
+      id = attribute.intId;
+    } else if (attribute.productAttributeType == ProductAttributeType.Text) {
+      id = attribute.textId;
+    } else if (attribute.productAttributeType == ProductAttributeType.Varchar) {
+      id = attribute.varcharId;
+    }
+    // var ids = [];
+    // ids.push(id);
+    this.confirmationService.confirm({
+      message: 'Bạn có chắc muốn xóa bản ghi này?',
+      accept: () => {
+        this.deleteItemsConfirmed(attribute.id, id);
+      },
+    });
+  }
+  deleteItemsConfirmed(attributeId: string, id: string) {
+    this.toggleBlockUI(true);
+    this.productService
+      .removeProductAttribute(attributeId, id)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Xóa thành công');
+          this.loadFormDetails(this.config.data?.id);
+          this.toggleBlockUI(false);
+        },
+        error: () => {
+          this.toggleBlockUI(false);
+        },
+      });
+  }
 
   private toggleBlockUI(enabled: boolean) {
     if (enabled == true) {

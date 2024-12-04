@@ -355,6 +355,7 @@ namespace Ecommerce.Admin.Products
                             IntId = aint != null ? aint.Id : null,
                             TextId = aText != null ? aText.Id : null,
                             VarcharId = aVarchar != null ? aVarchar.Id : null,
+                            Id = a.Id
                         };
             return await AsyncExecuter.ToListAsync(query);
         }
