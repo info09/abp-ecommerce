@@ -23,6 +23,12 @@ export class ProductAttributeComponent implements OnInit, OnDestroy {
   productAttributes: any[] = [];
   selectedEntity = {} as ProductDto;
 
+  showDateTimeControl: boolean = false;
+  showDecimalControl: boolean = false;
+  showIntControl: boolean = false;
+  showVarcharControl: boolean = false;
+  showTextControl: boolean = false;
+
   constructor(
     private productAttributeService: ProductAttributeService,
     private productService: ProductsService,
@@ -88,7 +94,6 @@ export class ProductAttributeComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       productId: new FormControl(this.config.data.id),
       attributeId: new FormControl(null, Validators.required),
-      attributeValue: new FormControl(null, Validators.required),
       dateTimeValue: new FormControl(null),
       decimalValue: new FormControl(null),
       intValue: new FormControl(null),
@@ -99,22 +104,6 @@ export class ProductAttributeComponent implements OnInit, OnDestroy {
 
   saveChange() {
     this.toggleBlockUI(true);
-    var selectedAttributeId = this.form.controls['attributeId'].value;
-    var dataType = this.fullAttributes.filter(x => x.id == selectedAttributeId)[0]
-      .productAttributeType;
-    console.log(dataType);
-    var value = this.form.controls['attributeValue'].value;
-    if (dataType == ProductAttributeType.Date) {
-      this.form.controls['dateTimeValue'].setValue(value);
-    } else if (dataType == ProductAttributeType.Decimal) {
-      this.form.controls['decimalValue'].setValue(value);
-    } else if (dataType == ProductAttributeType.Int) {
-      this.form.controls['intValue'].setValue(value);
-    } else if (dataType == ProductAttributeType.Text) {
-      this.form.controls['textValue'].setValue(value);
-    } else if (dataType == ProductAttributeType.Varchar) {
-      this.form.controls['varcharValue'].setValue(value);
-    }
     this.productService
       .addProductAttribute(this.form.value)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -128,6 +117,26 @@ export class ProductAttributeComponent implements OnInit, OnDestroy {
           this.toggleBlockUI(false);
         },
       });
+  }
+
+  selectAttribute(event: any) {
+    var dataType = this.fullAttributes.filter(i => i.id == event.value)[0].productAttributeType;
+    this.showDateTimeControl = false;
+    this.showDecimalControl = false;
+    this.showIntControl = false;
+    this.showTextControl = false;
+    this.showVarcharControl = false;
+    if (dataType == ProductAttributeType.Date) {
+      this.showDateTimeControl = true;
+    } else if (dataType == ProductAttributeType.Decimal) {
+      this.showDecimalControl = true;
+    } else if (dataType == ProductAttributeType.Int) {
+      this.showIntControl = true;
+    } else if (dataType == ProductAttributeType.Text) {
+      this.showTextControl = true;
+    } else if (dataType == ProductAttributeType.Varchar) {
+      this.showVarcharControl = true;
+    }
   }
 
   getDataTypeName(value: number) {
@@ -161,12 +170,11 @@ export class ProductAttributeComponent implements OnInit, OnDestroy {
     } else if (attribute.productAttributeType == ProductAttributeType.Varchar) {
       id = attribute.varcharId;
     }
-    // var ids = [];
-    // ids.push(id);
+
     this.confirmationService.confirm({
       message: 'Bạn có chắc muốn xóa bản ghi này?',
       accept: () => {
-        this.deleteItemsConfirmed(attribute.id, id);
+        this.deleteItemsConfirmed(attribute.attributeId, id);
       },
     });
   }

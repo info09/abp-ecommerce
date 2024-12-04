@@ -154,7 +154,7 @@ namespace Ecommerce.Admin.Products
             switch (attribute.ProductAttributeType)
             {
                 case ProductAttributeType.Int:
-                    if (input.IntValue.HasValue)
+                    if (!input.IntValue.HasValue)
                         throw new BusinessException(EcommerceDomainErrorCodes.ProductAttributeValueIsNotValid);
 
                     var productAttributeInt = new ProductAttributeInt(newAttributeId, input.AttributeId, input.ProductId, input.IntValue.Value);
@@ -175,7 +175,7 @@ namespace Ecommerce.Admin.Products
                     await _productAttributeTextRepository.InsertAsync(productAttributeText);
                     break;
                 case ProductAttributeType.Decimal:
-                    if (input.DecimalValue.HasValue)
+                    if (!input.DecimalValue.HasValue)
                         throw new BusinessException(EcommerceDomainErrorCodes.ProductAttributeValueIsNotValid);
 
                     var productAttributeDecimal = new ProductAttributeDecimal(newAttributeId, input.AttributeId, input.ProductId, input.DecimalValue.Value);
@@ -331,13 +331,13 @@ namespace Ecommerce.Admin.Products
                         from aint in aIntTable.DefaultIfEmpty()
                         join aVarchar in attributeVarcharQuery on a.Id equals aVarchar.AttributeId into aVarcharTable
                         from aVarchar in aVarcharTable.DefaultIfEmpty()
-                        join aText in attributeVarcharQuery on a.Id equals aText.AttributeId into aTextTable
+                        join aText in attributeTextQuery on a.Id equals aText.AttributeId into aTextTable
                         from aText in aTextTable.DefaultIfEmpty()
-                            //where (adate != null || adate.ProductId == productId)
-                            //&& (adecimal != null || adecimal.ProductId == productId)
-                            // && (aint != null || aint.ProductId == productId)
-                            //  && (aVarchar != null || aVarchar.ProductId == productId)
-                            //   && (aText != null || aText.ProductId == productId)
+                        where (adate == null || adate.ProductId == productId)
+                    && (adecimal == null || adecimal.ProductId == productId)
+                     && (aint == null || aint.ProductId == productId)
+                      && (aVarchar == null || aVarchar.ProductId == productId)
+                       && (aText == null || aText.ProductId == productId)
                         select new ProductAttributeValueDto()
                         {
                             Label = a.Label,
@@ -354,9 +354,13 @@ namespace Ecommerce.Admin.Products
                             DecimalId = adecimal != null ? adecimal.Id : null,
                             IntId = aint != null ? aint.Id : null,
                             TextId = aText != null ? aText.Id : null,
-                            VarcharId = aVarchar != null ? aVarchar.Id : null,
-                            Id = a.Id
+                            VarcharId = aVarchar != null ? aVarchar.Id : null
                         };
+            query = query.Where(x => x.DateTimeId != null
+                           || x.DecimalId != null
+                           || x.IntValue != null
+                           || x.TextId != null
+                           || x.VarcharId != null);
             return await AsyncExecuter.ToListAsync(query);
         }
 
@@ -371,21 +375,21 @@ namespace Ecommerce.Admin.Products
             var attributeTextQuery = await _productAttributeTextRepository.GetQueryableAsync();
 
             var query = from a in attributeQuery
-                        join adate in attributeDateTimeQuery on a.Id equals adate.AttributeId into aDateTimeTabke
-                        from adate in aDateTimeTabke.DefaultIfEmpty()
+                        join adate in attributeDateTimeQuery on a.Id equals adate.AttributeId into aDateTimeTable
+                        from adate in aDateTimeTable.DefaultIfEmpty()
                         join adecimal in attributeDecimalQuery on a.Id equals adecimal.AttributeId into aDecimalTable
                         from adecimal in aDecimalTable.DefaultIfEmpty()
                         join aint in attributeIntQuery on a.Id equals aint.AttributeId into aIntTable
                         from aint in aIntTable.DefaultIfEmpty()
                         join aVarchar in attributeVarcharQuery on a.Id equals aVarchar.AttributeId into aVarcharTable
                         from aVarchar in aVarcharTable.DefaultIfEmpty()
-                        join aText in attributeVarcharQuery on a.Id equals aText.AttributeId into aTextTable
+                        join aText in attributeTextQuery on a.Id equals aText.AttributeId into aTextTable
                         from aText in aTextTable.DefaultIfEmpty()
-                        where (adate != null || adate.ProductId == input.ProductId)
-                        && (adecimal != null || adecimal.ProductId == input.ProductId)
-                         && (aint != null || aint.ProductId == input.ProductId)
-                          && (aVarchar != null || aVarchar.ProductId == input.ProductId)
-                           && (aText != null || aText.ProductId == input.ProductId)
+                        where (adate == null || adate.ProductId == input.ProductId)
+                        && (adecimal == null || adecimal.ProductId == input.ProductId)
+                         && (aint == null || aint.ProductId == input.ProductId)
+                          && (aVarchar == null || aVarchar.ProductId == input.ProductId)
+                           && (aText == null || aText.ProductId == input.ProductId)
                         select new ProductAttributeValueDto()
                         {
                             Label = a.Label,
@@ -403,6 +407,11 @@ namespace Ecommerce.Admin.Products
                             TextId = aText.Id,
                             VarcharId = aVarchar.Id,
                         };
+            query = query.Where(x => x.DateTimeId != null
+            || x.DecimalId != null
+            || x.IntValue != null
+            || x.TextId != null
+            || x.VarcharId != null);
             var totalCount = await AsyncExecuter.LongCountAsync(query);
             var data = await AsyncExecuter.ToListAsync(
                 query.OrderByDescending(x => x.Label)
