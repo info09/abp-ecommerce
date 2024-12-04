@@ -4,6 +4,7 @@
     "Menu:Home": "Home",
     "Welcome": "Welcome",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io.",
+    "Permission:Catalog": "Danh mục",
     "Permission:Catalog.Product": "Sản phẩm",
     "Permission:Catalog.Product.Create": "Tạo mới sản phẩm",
     "Permission:Catalog.Product.Update": "Cập nhật sản phẩm",

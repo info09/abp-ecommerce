@@ -23,9 +23,10 @@ import { RoleRoutingModule } from './role-routing.module';
 import { RoleDetailComponent } from './role-detail.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { PermissionGrantComponent } from './permission-grant.component';
 
 @NgModule({
-  declarations: [RoleComponent, RoleDetailComponent],
+  declarations: [RoleComponent, RoleDetailComponent, PermissionGrantComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -50,6 +51,6 @@ import { CommonModule } from '@angular/common';
     RoleRoutingModule,
     ReactiveFormsModule,
   ],
-  entryComponents: [RoleDetailComponent],
+  entryComponents: [RoleDetailComponent, PermissionGrantComponent],
 })
 export class RoleModule {}

@@ -7,6 +7,7 @@ import { PagedResultDto } from '@abp/ng.core';
 import { RoleDetailComponent } from './role-detail.component';
 import { MessageConstants } from '../shared/constants/messages.const';
 import { ConfirmationService } from 'primeng/api';
+import { PermissionGrantComponent } from './permission-grant.component';
 
 @Component({
   selector: 'app-role',
@@ -138,7 +139,7 @@ export class RoleComponent implements OnInit, OnDestroy {
   deleteItemsConfirm(ids: string[]) {
     this.toggleBlockUI(true);
     this.roleService
-      .deleteMultipleByIds(ids)
+      .deleteMultiple(ids)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
         next: () => {
@@ -152,5 +153,22 @@ export class RoleComponent implements OnInit, OnDestroy {
       });
   }
 
-  showPermissionModal(id: string, name: string) {}
+  showPermissionModal(id: string, name: string) {
+    const ref = this.dialogService.open(PermissionGrantComponent, {
+      data: {
+        id: id,
+        name: name,
+      },
+      header: name,
+      width: '70%',
+    });
+
+    ref.onClose.subscribe((data: RoleDto) => {
+      if (data) {
+        this.notificationService.showSuccess(MessageConstants.UPDATED_OK_MSG);
+        this.selectedItems = [];
+        this.loadData(data.id);
+      }
+    });
+  }
 }

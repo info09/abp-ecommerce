@@ -4,6 +4,7 @@
     "Menu:Home": "Trang chủ",
     "Welcome": "Chào mừng bạn",
     "LongWelcomeMessage": "Chào mừng bạn đến ứng dụng. Đây là một dự án khởi nghiệp dựa trên khung ABP. Để biết thêm thông tin, hãy truy cập abp.io.",
+    "Permission:Catalog": "Danh mục",
     "Permission:Catalog.Product": "Sản phẩm",
     "Permission:Catalog.Product.Create": "Tạo mới sản phẩm",
     "Permission:Catalog.Product.Update": "Cập nhật sản phẩm",

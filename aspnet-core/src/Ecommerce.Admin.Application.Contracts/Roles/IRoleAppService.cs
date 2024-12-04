@@ -11,7 +11,7 @@ namespace Ecommerce.Admin.Roles
     {
         Task<PagedResultDto<RoleInListDto>> GetListFilterAsync(BaseListFilterDto input);
         Task<List<RoleInListDto>> GetListAllAsync();
-        Task DeleteMultiple(IEnumerable<Guid> ids);
+        Task DeleteMultipleAsync(IEnumerable<Guid> ids);
         Task<GetPermissionListResultDto> GetPermissionsAsync(string providerName, string providerKey);
         Task UpdatePermissionsAsync(string providerName, string providerKey, UpdatePermissionsDto input);
     }

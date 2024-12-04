@@ -9,7 +9,7 @@ public class EcommerceAdminPermissionDefinitionProvider : PermissionDefinitionPr
     public override void Define(IPermissionDefinitionContext context)
     {
         //Catalog
-        var catalogGroup = context.AddGroup(EcommerceAdminPermissions.CatalogGroupName);
+        var catalogGroup = context.AddGroup(EcommerceAdminPermissions.CatalogGroupName, L("Permission:Catalog"));
 
         //Add product
         var productPermission = catalogGroup.AddPermission(EcommerceAdminPermissions.Product.Default, L("Permission:Catalog.Product"));
