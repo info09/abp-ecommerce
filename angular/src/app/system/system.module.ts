@@ -22,9 +22,17 @@ import { RoleComponent } from './role/role.component';
 import { RoleDetailComponent } from './role/role-detail.component';
 import { PermissionGrantComponent } from './role/permission-grant.component';
 import { SystemRoutingModule } from './system-routing.module';
+import { UserComponent } from './user/user.component';
+import { UserDetailComponent } from './user/user-detail.component';
 
 @NgModule({
-  declarations: [RoleComponent, RoleDetailComponent, PermissionGrantComponent],
+  declarations: [
+    RoleComponent,
+    RoleDetailComponent,
+    PermissionGrantComponent,
+    UserComponent,
+    UserDetailComponent,
+  ],
   imports: [
     SharedModule,
     PanelModule,
@@ -47,6 +55,11 @@ import { SystemRoutingModule } from './system-routing.module';
     CalendarModule,
     SystemRoutingModule,
   ],
-  entryComponents: [RoleDetailComponent, PermissionGrantComponent],
+  entryComponents: [
+    RoleDetailComponent,
+    PermissionGrantComponent,
+    UserComponent,
+    UserDetailComponent,
+  ],
 })
 export class SystemModule {}

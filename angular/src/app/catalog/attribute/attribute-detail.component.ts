@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ProductAttributeDto, ProductAttributeService } from '@proxy/product-attributes';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { UtilityService } from '../../shared/services/utility.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { productAttributeTypeOptions } from '@proxy/ecommerce/attributes';
+import { ProductAttributeDto, ProductAttributeService } from '@proxy/catalog/product-attributes';
 
 @Component({
   selector: 'app-attribute-detail',

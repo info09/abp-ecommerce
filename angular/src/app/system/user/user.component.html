@@ -1,8 +1,11 @@
 <div class="animated fadeIn">
-  <p-panel #pnl [style]="{ 'margin-bottom': '10px' }" header="Quản lý quyền">
+  <p-panel #pnl [style]="{ 'margin-bottom': '10px' }" header="Quản lý người dùng">
     <div class="grid">
-      <div class="col-6">
+      <div class="col-4">
         <button
+          appPermission
+          appFunction="LEARNING_COURSE_CATEGORY"
+          appAction="CREATE"
           pButton
           type="button"
           label="Thêm"
@@ -11,27 +14,31 @@
           class="ml-1 p-button-info"
         ></button>
         <button
+          appPermission
+          appFunction="LEARNING_COURSE_CATEGORY"
+          appAction="DELETE"
           pButton
           type="button"
-          (click)="showEditModal()"
-          *ngIf="selectedItems.length == 1"
-          class="ml-1 p-button-help"
-          icon="fa fa-minus"
-          iconPos="left"
-          label="Sửa"
+          label="Xóa"
+          icon="fa fa-trash"
+          class="ml-1 p-button-danger"
+          *ngIf="selectedItems.length > 0"
+          (click)="deleteItems()"
         ></button>
         <button
+          appPermission
+          appFunction="LEARNING_COURSE_CATEGORY"
+          appAction="UPDATE"
           pButton
           type="button"
-          (click)="deleteItems()"
-          *ngIf="selectedItems.length > 0"
-          class="ml-1 p-button-danger"
-          icon="fa fa-minus"
-          iconPos="left"
-          label="Xóa"
+          label="Sửa"
+          icon="fa fa-edit"
+          class="ml-1 p-button-help"
+          *ngIf="selectedItems.length == 1"
+          (click)="showEditModal()"
         ></button>
       </div>
-      <div class="col-6">
+      <div class="col-8">
         <div class="formgroup-inline">
           <div class="field">
             <input
@@ -39,7 +46,7 @@
               pInputText
               (keyup.enter)="loadData()"
               [(ngModel)]="keyword"
-              placeholder="Nhập tên nhóm..."
+              placeholder="Nhập từ khóa..."
               type="text"
             />
           </div>
@@ -54,7 +61,10 @@
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
           <th>Tên</th>
-          <th>Mô tả</th>
+          <th>Tài khoản</th>
+          <th>Email</th>
+          <th>Số ĐT</th>
+          <th>Ngày tham gia</th>
           <th></th>
         </tr>
       </ng-template>
@@ -65,9 +75,13 @@
             <p-tableCheckbox [value]="row"></p-tableCheckbox>
           </td>
           <td>{{ row.name }}</td>
-          <td>{{ row.description }}</td>
-          <td>
-            <button pButton (click)="showPermissionModal(row.id, row.name)">Phân quyền</button>
+          <td>{{ row.userName }}</td>
+          <td>{{ row.email }}</td>
+          <td>{{ row.phoneNumber }}</td>
+          <td>{{ row.creationTime | date : 'dd-MM-yyyy hh:mm' }}</td>
+          <td style="width: 150px">
+            <p-badge *ngIf="row.isActive == 1" value="Kích hoạt" severity="success"></p-badge>
+            <p-badge *ngIf="row.isActive == 0" value="Khoá" severity="danger"></p-badge>
           </td>
         </tr>
       </ng-template>

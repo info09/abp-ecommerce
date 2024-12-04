@@ -7,7 +7,7 @@ import { TenantManagementConfigModule } from '@abp/ng.tenant-management/config';
 import { ThemeLeptonXModule } from '@abp/ng.theme.lepton-x';
 import { SideMenuLayoutModule } from '@abp/ng.theme.lepton-x/layouts';
 import { ThemeSharedModule } from '@abp/ng.theme.shared';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
@@ -24,6 +24,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { GlobalHttpInterceptorService } from './shared/interceptors/error-handler.interceptor';
+import { registerLocaleData } from '@angular/common';
+import localeVi from '@angular/common/locales/vi';
+registerLocaleData(localeVi);
 
 @NgModule({
   imports: [
@@ -57,6 +60,7 @@ import { GlobalHttpInterceptorService } from './shared/interceptors/error-handle
       useClass: GlobalHttpInterceptorService,
       multi: true,
     },
+    { provide: LOCALE_ID, useValue: 'vi' },
     APP_ROUTE_PROVIDER,
     DialogService,
     MessageService,

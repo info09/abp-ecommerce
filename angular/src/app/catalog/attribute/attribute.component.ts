@@ -5,12 +5,12 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, take, takeUntil } from 'rxjs';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AttributeDetailComponent } from './attribute-detail.component';
+import { ProductAttributeType } from '@proxy/ecommerce/attributes';
 import {
   ProductAttributeDto,
   ProductAttributeInListDto,
   ProductAttributeService,
-} from '@proxy/product-attributes';
-import { ProductAttributeType } from '@proxy/ecommerce/attributes';
+} from '@proxy/catalog/product-attributes';
 
 @Component({
   selector: 'app-attribute',

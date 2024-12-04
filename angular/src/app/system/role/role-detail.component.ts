@@ -1,10 +1,10 @@
 import { AuthService } from '@abp/ng.core';
 import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { RoleDto, RoleInListDto, RolesService } from '@proxy/roles';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { UtilityService } from '../../shared/services/utility.service';
+import { RoleDto, RolesService } from '@proxy/system/roles';
 
 @Component({
   templateUrl: './role-detail.component.html',

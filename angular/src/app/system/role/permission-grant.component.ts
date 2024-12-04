@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { RolesService } from '@proxy/roles';
+import { RolesService } from '@proxy/system/roles';
 import {
   GetPermissionListResultDto,
   PermissionGrantInfoDto,

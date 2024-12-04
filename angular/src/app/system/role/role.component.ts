@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RoleDto, RoleInListDto, RolesService } from '@proxy/roles';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -8,6 +7,7 @@ import { RoleDetailComponent } from './role-detail.component';
 import { MessageConstants } from '../../shared/constants/messages.const';
 import { ConfirmationService } from 'primeng/api';
 import { PermissionGrantComponent } from './permission-grant.component';
+import { RoleDto, RoleInListDto, RolesService } from '@proxy/system/roles';
 
 @Component({
   selector: 'app-role',

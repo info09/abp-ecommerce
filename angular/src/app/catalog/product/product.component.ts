@@ -1,7 +1,5 @@
 import { PagedResultDto } from '@abp/ng.core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ProductCategoriesService, ProductCategoryInListDto } from '@proxy/product-categories';
-import { ProductDto, ProductInListDto, ProductsService } from '@proxy/products';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, take, takeUntil } from 'rxjs';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -9,6 +7,11 @@ import { ProductDetailComponent } from './product-detail.component';
 import { ProductType } from '@proxy/ecommerce/products';
 import { ConfirmationService } from 'primeng/api';
 import { ProductAttributeComponent } from './product-attribute.component';
+import { ProductDto, ProductInListDto, ProductsService } from '@proxy/catalog/products';
+import {
+  ProductCategoriesService,
+  ProductCategoryInListDto,
+} from '@proxy/catalog/product-categories';
 
 @Component({
   selector: 'app-product',
