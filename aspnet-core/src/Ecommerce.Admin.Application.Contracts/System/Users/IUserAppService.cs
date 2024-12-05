@@ -12,5 +12,7 @@ namespace Ecommerce.Admin.System.Users
         Task<PagedResultDto<UserInListDto>> GetListWithFilterAsync(BaseListFilterDto input);
         Task<List<UserInListDto>> GetListAllAsync(string filterKeyword);
         Task AssignRolesAsync(Guid userId, string[] roleNames);
+        Task SetPasswordAsync(Guid userId, SetPasswordDto input);
+        Task LockAndUnlockAsync(Guid userId);
     }
 }

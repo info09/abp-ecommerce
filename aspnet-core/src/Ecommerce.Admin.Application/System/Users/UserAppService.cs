@@ -145,5 +145,35 @@ namespace Ecommerce.Admin.System.Users
                 throw new UserFriendlyException(errors);
             }
         }
+
+        public async Task SetPasswordAsync(Guid userId, SetPasswordDto input)
+        {
+            var user = await _identityUserManager.FindByIdAsync(userId.ToString()) ?? throw new EntityNotFoundException(typeof(IdentityUser), userId);
+
+            if (input.NewPassword != input.ConfirmNewPassword)
+                throw new UserFriendlyException("Mật khẩu không trùng khớp");
+
+            var token = await _identityUserManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _identityUserManager.ResetPasswordAsync(user, token, input.NewPassword);
+            if (!result.Succeeded)
+            {
+                List<Microsoft.AspNetCore.Identity.IdentityError> errorList = result.Errors.ToList();
+                string errors = "";
+                foreach (var error in errorList)
+                {
+                    errors = errors + error.Description.ToString();
+                }
+                throw new UserFriendlyException(errors);
+            }
+        }
+
+        public async Task LockAndUnlockAsync(Guid userId)
+        {
+            var user = await _identityUserManager.FindByIdAsync(userId.ToString()) ?? throw new EntityNotFoundException(typeof(IdentityUser), userId);
+
+            user.SetIsActive(!user.IsActive);
+            await _identityUserManager.UpdateAsync(user);
+
+        }
     }
 }

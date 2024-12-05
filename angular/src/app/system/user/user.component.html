@@ -85,7 +85,7 @@
             <p-badge *ngIf="row.isActive == 0" value="Khoá" severity="danger"></p-badge>
           </td>
           <td>
-            <!-- <button
+            <button
               pButton
               pRipple
               type="button"
@@ -95,7 +95,7 @@
               class="p-button-rounded p-button-text"
               (click)="setPassword(row.id)"
             ></button>
-             -->
+
             <button
               pButton
               pRipple
@@ -105,6 +105,17 @@
               tooltipPosition="top"
               (click)="assignRole(row.id)"
               class="p-button-rounded p-button-text"
+            ></button>
+
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-ban"
+              pTooltip="Khóa tài khoản"
+              tooltipPosition="top"
+              class="p-button-rounded p-button-text"
+              (click)="lockAndUnlockAccount(row.id, row.isActive)"
             ></button>
           </td>
         </tr>

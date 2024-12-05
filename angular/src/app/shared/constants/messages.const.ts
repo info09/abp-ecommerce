@@ -4,6 +4,8 @@ export class MessageConstants {
   public static CONFIRM_PAY_MSG = 'Bạn có chắc muốn thanh toán khoản này?';
   public static CONFIRM_SET_DEFAULT_MSG = 'Bạn có chắc muốn đặt mặc định bản ghi này?';
   public static CONFIRM_SET_IS_HOME_MSG = 'Bạn có chắc muốn hiển thị bản ghi này tại trang chủ?';
+  public static CONFIRM_LOCK_ACCOUNT_MSG = 'Bạn có chắc muốn khóa tài khoản này chứ?';
+  public static CONFIRM_UNLOCK_ACCOUNT_MSG = 'Bạn có chắc muốn mở khóa tài khoản này chứ?';
   public static CONFIRM_SET_NOT_IS_HOME_MSG =
     'Bạn có chắc muốn bỏ hiển thị bản ghi này tại trang chủ?';
   public static CONFIRM_PUBLISH_POST = 'Bạn có chắc muốn xuất bản bài viết này?';

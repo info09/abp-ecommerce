@@ -9,6 +9,11 @@ export interface CreateUserDto {
   phoneNumber?: string;
 }
 
+export interface SetPasswordDto {
+  newPassword?: string;
+  confirmNewPassword?: string;
+}
+
 export interface UpdateUserDto {
   name?: string;
   surname?: string;
@@ -32,4 +37,5 @@ export interface UserInListDto extends AuditedEntityDto<string> {
   email?: string;
   userName?: string;
   phoneNumber?: string;
+  isActive: boolean;
 }

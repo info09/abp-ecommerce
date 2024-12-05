@@ -8,6 +8,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { UserDetailComponent } from './user-detail.component';
 import { MessageConstants } from 'src/app/shared/constants/messages.const';
 import { RoleAssignComponent } from './role-assign.component';
+import { SetPasswordComponent } from './set-password.component';
 
 @Component({
   selector: 'app-user',
@@ -147,6 +148,49 @@ export class UserComponent implements OnInit, OnDestroy {
         this.loadData();
       }
     });
+  }
+
+  setPassword(id: string) {
+    const ref = this.dialogService.open(SetPasswordComponent, {
+      data: {
+        id: id,
+      },
+      header: 'Đặt lại mật khẩu',
+      width: '70%',
+    });
+
+    ref.onClose.subscribe((result: boolean) => {
+      if (result) {
+        this.notificationService.showSuccess(MessageConstants.CHANGE_PASSWORD_SUCCCESS_MSG);
+        this.loadData();
+      }
+    });
+  }
+
+  lockAndUnlockAccount(id: string, status: number) {
+    this.confirmationService.confirm({
+      message:
+        status == 1
+          ? MessageConstants.CONFIRM_LOCK_ACCOUNT_MSG
+          : MessageConstants.CONFIRM_UNLOCK_ACCOUNT_MSG,
+      accept: () => {
+        this.lockAndUnlockAccountConfirm(id);
+      },
+    });
+  }
+
+  lockAndUnlockAccountConfirm(id: string) {
+    this.toggleBlockUI(true);
+    this.userService
+      .lockAndUnlock(id)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: () => {
+          this.toggleBlockUI(false);
+          this.notificationService.showSuccess(MessageConstants.UPDATED_OK_MSG);
+          this.loadData();
+        },
+      });
   }
 
   pageChanged(event: any): void {
