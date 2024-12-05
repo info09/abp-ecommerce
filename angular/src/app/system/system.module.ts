@@ -24,6 +24,8 @@ import { PermissionGrantComponent } from './role/permission-grant.component';
 import { SystemRoutingModule } from './system-routing.module';
 import { UserComponent } from './user/user.component';
 import { UserDetailComponent } from './user/user-detail.component';
+import { RoleAssignComponent } from './user/role-assign.component';
+import { PickListModule } from 'primeng/picklist';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { UserDetailComponent } from './user/user-detail.component';
     PermissionGrantComponent,
     UserComponent,
     UserDetailComponent,
+    RoleAssignComponent,
   ],
   imports: [
     SharedModule,
@@ -54,12 +57,14 @@ import { UserDetailComponent } from './user/user-detail.component';
     ConfirmDialogModule,
     CalendarModule,
     SystemRoutingModule,
+    PickListModule,
   ],
   entryComponents: [
     RoleDetailComponent,
     PermissionGrantComponent,
     UserComponent,
     UserDetailComponent,
+    RoleAssignComponent,
   ],
 })
 export class SystemModule {}

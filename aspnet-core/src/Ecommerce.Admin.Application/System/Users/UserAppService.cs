@@ -128,7 +128,7 @@ namespace Ecommerce.Admin.System.Users
 
             var currentRoles = await _identityUserManager.GetRolesAsync(user);
             var removedResult = await _identityUserManager.RemoveFromRolesAsync(user, currentRoles);
-            var addedResult = await _identityUserManager.AddToRolesAsync(user, currentRoles);
+            var addedResult = await _identityUserManager.AddToRolesAsync(user, roleNames);
 
             if (!addedResult.Succeeded || !removedResult.Succeeded)
             {

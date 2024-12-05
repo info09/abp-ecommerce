@@ -65,6 +65,7 @@
           <th>Email</th>
           <th>Số ĐT</th>
           <th>Ngày tham gia</th>
+          <th style="width: 150px">Trạng thái</th>
           <th></th>
         </tr>
       </ng-template>
@@ -82,6 +83,29 @@
           <td style="width: 150px">
             <p-badge *ngIf="row.isActive == 1" value="Kích hoạt" severity="success"></p-badge>
             <p-badge *ngIf="row.isActive == 0" value="Khoá" severity="danger"></p-badge>
+          </td>
+          <td>
+            <!-- <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-key"
+              pTooltip="Đặt mật khẩu"
+              tooltipPosition="top"
+              class="p-button-rounded p-button-text"
+              (click)="setPassword(row.id)"
+            ></button>
+             -->
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-users"
+              pTooltip="Gán vai trò"
+              tooltipPosition="top"
+              (click)="assignRole(row.id)"
+              class="p-button-rounded p-button-text"
+            ></button>
           </td>
         </tr>
       </ng-template>
