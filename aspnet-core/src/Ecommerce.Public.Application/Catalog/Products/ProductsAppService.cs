@@ -40,7 +40,7 @@ namespace Ecommerce.Public.Catalog.Products
             var data = await AsyncExecuter.ToListAsync(query);
             return ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data);
         }
-        public async Task<PagedResultDto<ProductInListDto>> GetListFilterAsync(ProductListFilter input)
+        public async Task<PagedResult<ProductInListDto>> GetListFilterAsync(ProductListFilter input)
         {
             var query = await Repository.GetQueryableAsync();
             query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Keyword), x => x.Name.Contains(input.Keyword));
@@ -48,10 +48,10 @@ namespace Ecommerce.Public.Catalog.Products
             var totalCount = await AsyncExecuter.LongCountAsync(query);
             var data = await AsyncExecuter.ToListAsync(
                 query.OrderByDescending(x => x.CreationTime)
-                .Skip(input.SkipCount)
-                .Take(input.MaxResultCount)
+                .Skip((input.CurrentPage - 1) * input.PageSize)
+                .Take(input.PageSize)
                 );
-            return new PagedResultDto<ProductInListDto>(totalCount, ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data));
+            return new PagedResult<ProductInListDto>(ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data), totalCount, input.CurrentPage, input.PageSize);
         }
 
         public async Task<string> GetThumbnailImageAsync(string fileName)
@@ -117,7 +117,7 @@ namespace Ecommerce.Public.Catalog.Products
                            || x.VarcharId != null);
             return await AsyncExecuter.ToListAsync(query);
         }
-        public async Task<PagedResultDto<ProductAttributeValueDto>> GetListProductAttributesAsync(ProductAttributeListFilterDto input)
+        public async Task<PagedResult<ProductAttributeValueDto>> GetListProductAttributesAsync(ProductAttributeListFilterDto input)
         {
             var attributeQuery = await _productAttributeRepository.GetQueryableAsync();
             var attributeDateTimeQuery = await _productAttributeDateTimeRepository.GetQueryableAsync();
@@ -167,10 +167,10 @@ namespace Ecommerce.Public.Catalog.Products
             var totalCount = await AsyncExecuter.LongCountAsync(query);
             var data = await AsyncExecuter.ToListAsync(
                 query.OrderByDescending(x => x.Label)
-                .Skip(input.SkipCount)
-                .Take(input.MaxResultCount)
+                .Skip((input.CurrentPage - 1) * input.PageSize)
+                .Take(input.PageSize)
                 );
-            return new PagedResultDto<ProductAttributeValueDto>(totalCount, data);
+            return new PagedResult<ProductAttributeValueDto>(data, totalCount, input.CurrentPage, input.PageSize);
         }
 
         public async Task<List<ProductInListDto>> GetListTopSellerAsync(int numberOfRecords)

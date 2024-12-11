@@ -23,15 +23,15 @@ namespace Ecommerce.Public.Catalog.ProductAttributes
             return ObjectMapper.Map<List<ProductAttribute>, List<ProductAttributeInListDto>>(data);
         }
 
-        public async Task<PagedResultDto<ProductAttributeInListDto>> GetListFilterAsync(BaseListFilterDto input)
+        public async Task<PagedResult<ProductAttributeInListDto>> GetListFilterAsync(BaseListFilterDto input)
         {
             var query = await Repository.GetQueryableAsync();
             query = query.WhereIf(!string.IsNullOrEmpty(input.Keyword), i => i.Label.ToLower().Contains(input.Keyword.ToLower()));
 
             var totalCount = await AsyncExecuter.LongCountAsync(query);
-            var data = await AsyncExecuter.ToListAsync(query.Skip(input.SkipCount).Take(input.MaxResultCount));
+            var data = await AsyncExecuter.ToListAsync(query.Skip((input.CurrentPage - 1) * input.PageSize).Take(input.PageSize));
 
-            return new PagedResultDto<ProductAttributeInListDto>(totalCount, ObjectMapper.Map<List<ProductAttribute>, List<ProductAttributeInListDto>>(data));
+            return new PagedResult<ProductAttributeInListDto>(ObjectMapper.Map<List<ProductAttribute>, List<ProductAttributeInListDto>>(data), totalCount, input.CurrentPage, input.PageSize);
         }
     }
 }

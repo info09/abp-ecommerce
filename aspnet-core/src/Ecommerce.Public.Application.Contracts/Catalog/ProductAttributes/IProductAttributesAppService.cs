@@ -8,7 +8,7 @@ namespace Ecommerce.Public.Catalog.ProductAttributes
 {
     public interface IProductAttributesAppService : IReadOnlyAppService<ProductAttributeDto, Guid, PagedResultRequestDto>
     {
-        Task<PagedResultDto<ProductAttributeInListDto>> GetListFilterAsync(BaseListFilterDto input);
+        Task<PagedResult<ProductAttributeInListDto>> GetListFilterAsync(BaseListFilterDto input);
         Task<List<ProductAttributeInListDto>> GetAllListAsync();
     }
 }

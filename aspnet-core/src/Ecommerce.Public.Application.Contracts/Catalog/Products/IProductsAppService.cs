@@ -9,11 +9,11 @@ namespace Ecommerce.Public.Catalog.Products
 {
     public interface IProductsAppService : IReadOnlyAppService<ProductDto, Guid, PagedResultRequestDto>
     {
-        Task<PagedResultDto<ProductInListDto>> GetListFilterAsync(ProductListFilter input);
+        Task<PagedResult<ProductInListDto>> GetListFilterAsync(ProductListFilter input);
         Task<List<ProductInListDto>> GetListAllAsync();
         Task<string> GetThumbnailImageAsync(string fileName);
         Task<List<ProductAttributeValueDto>> GetListProductAttributeAllAsync(Guid productId);
-        Task<PagedResultDto<ProductAttributeValueDto>> GetListProductAttributesAsync(ProductAttributeListFilterDto input);
+        Task<PagedResult<ProductAttributeValueDto>> GetListProductAttributesAsync(ProductAttributeListFilterDto input);
 
         Task<List<ProductInListDto>> GetListTopSellerAsync(int numberOfRecords);
     }
