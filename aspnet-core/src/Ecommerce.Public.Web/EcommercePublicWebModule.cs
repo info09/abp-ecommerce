@@ -47,7 +47,7 @@ namespace Ecommerce.Public.Web;
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpSwashbuckleModule)
     )]
-public class PublicWebModule : AbpModule
+public class EcommercePublicWebModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
@@ -59,7 +59,7 @@ public class PublicWebModule : AbpModule
                 typeof(EcommerceDomainSharedModule).Assembly,
                 typeof(EcommercePublicApplicationModule).Assembly,
                 typeof(EcommercePublicApplicationContractsModule).Assembly,
-                typeof(PublicWebModule).Assembly
+                typeof(EcommercePublicWebModule).Assembly
             );
         });
 
@@ -121,7 +121,7 @@ public class PublicWebModule : AbpModule
     {
         Configure<AbpAutoMapperOptions>(options =>
         {
-            options.AddMaps<PublicWebModule>();
+            options.AddMaps<EcommercePublicWebModule>();
         });
     }
 
@@ -135,7 +135,7 @@ public class PublicWebModule : AbpModule
                 options.FileSets.ReplaceEmbeddedByPhysical<EcommerceDomainModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Ecommerce.Domain"));
                 options.FileSets.ReplaceEmbeddedByPhysical<EcommercePublicApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Ecommerce.Public.Application.Contracts"));
                 options.FileSets.ReplaceEmbeddedByPhysical<EcommercePublicApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Ecommerce.Public.Application"));
-                options.FileSets.ReplaceEmbeddedByPhysical<PublicWebModule>(hostingEnvironment.ContentRootPath);
+                options.FileSets.ReplaceEmbeddedByPhysical<EcommercePublicWebModule>(hostingEnvironment.ContentRootPath);
             });
         }
     }
