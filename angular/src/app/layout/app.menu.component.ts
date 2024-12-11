@@ -24,22 +24,30 @@ export class AppMenuComponent implements OnInit {
             label: 'Danh sách sản phẩm',
             icon: 'pi pi-fw pi-circle',
             routerLink: ['/catalog/product'],
+            permission: 'EcomAdminCatalog.Product',
           },
           {
             label: 'Danh sách thuộc tính',
             icon: 'pi pi-fw pi-circle',
             routerLink: ['/catalog/attribute'],
+            permission: 'EcomAdminCatalog.Attribute',
           },
         ],
       },
       {
         label: 'Hệ thống',
         items: [
-          { label: 'Danh sách quyền', icon: 'pi pi-fw pi-circle', routerLink: ['/system/role'] },
+          {
+            label: 'Danh sách quyền',
+            icon: 'pi pi-fw pi-circle',
+            routerLink: ['/system/role'],
+            permission: 'AbpIdentity.Roles',
+          },
           {
             label: 'Danh sách người dùng',
             icon: 'pi pi-fw pi-circle',
             routerLink: ['/system/user'],
+            permission: 'AbpIdentity.Users',
           },
         ],
       },

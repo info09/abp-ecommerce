@@ -122,6 +122,11 @@ public class EcommerceAdminHttpApiHostModule : AbpModule
                     ValidateIssuer = false,
                 };
             });
+
+        context.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin", "Member"));
+        });
     }
 
     private static void ConfigureSwaggerServices(ServiceConfigurationContext context, IConfiguration configuration)
