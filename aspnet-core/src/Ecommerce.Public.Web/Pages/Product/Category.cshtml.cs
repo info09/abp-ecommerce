@@ -27,6 +27,7 @@ namespace Ecommerce.Public.Web.Pages.Product
             Categories = await _productCategoriesAppService.GetListAllAsync();
             ProductData = await _productsAppService.GetListFilterAsync(new ProductListFilter()
             {
+                CategoryId = Category.Id,
                 CurrentPage = page
             });
         }
