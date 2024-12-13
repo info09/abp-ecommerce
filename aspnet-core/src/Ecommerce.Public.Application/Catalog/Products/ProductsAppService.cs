@@ -21,8 +21,9 @@ namespace Ecommerce.Public.Catalog.Products
         private readonly IRepository<ProductAttributeDecimal> _productAttributeDecimalRepository;
         private readonly IRepository<ProductAttributeVarchar> _productAttributeVarcharRepository;
         private readonly IRepository<ProductAttributeText> _productAttributeTextRepository;
+        private readonly IRepository<Product, Guid> _productRepository;
 
-        public ProductsAppService(IReadOnlyRepository<Product, Guid> repository, IBlobContainer<ProductThumbnailPictureContainer> fileContainer, IRepository<ProductAttribute> productAttributeRepository, IRepository<ProductAttributeDateTime> productAttributeDateTimeRepository, IRepository<ProductAttributeInt> productAttributeIntRepository, IRepository<ProductAttributeDecimal> productAttributeDecimalRepository, IRepository<ProductAttributeVarchar> productAttributeVarcharRepository, IRepository<ProductAttributeText> productAttributeTextRepository) : base(repository)
+        public ProductsAppService(IReadOnlyRepository<Product, Guid> repository, IBlobContainer<ProductThumbnailPictureContainer> fileContainer, IRepository<ProductAttribute> productAttributeRepository, IRepository<ProductAttributeDateTime> productAttributeDateTimeRepository, IRepository<ProductAttributeInt> productAttributeIntRepository, IRepository<ProductAttributeDecimal> productAttributeDecimalRepository, IRepository<ProductAttributeVarchar> productAttributeVarcharRepository, IRepository<ProductAttributeText> productAttributeTextRepository, IRepository<Product, Guid> productRepository) : base(repository)
         {
             _fileContainer = fileContainer;
             _productAttributeRepository = productAttributeRepository;
@@ -31,6 +32,7 @@ namespace Ecommerce.Public.Catalog.Products
             _productAttributeDecimalRepository = productAttributeDecimalRepository;
             _productAttributeVarcharRepository = productAttributeVarcharRepository;
             _productAttributeTextRepository = productAttributeTextRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<List<ProductInListDto>> GetListAllAsync()
@@ -181,6 +183,12 @@ namespace Ecommerce.Public.Catalog.Products
             var data = await AsyncExecuter.ToListAsync(query);
 
             return ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data);
+        }
+
+        public async Task<ProductDto> GetBySlugAsync(string slug)
+        {
+            var product = await _productRepository.GetAsync(i => i.Slug == slug);
+            return ObjectMapper.Map<Product, ProductDto>(product);
         }
     }
 }
