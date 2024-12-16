@@ -7,6 +7,7 @@ using Ecommerce.Public.Catalog.Manufacturers;
 using Ecommerce.Public.Catalog.ProductAttributes;
 using Ecommerce.Public.Catalog.ProductCategories;
 using Ecommerce.Public.Catalog.Products;
+using Ecommerce.Public.Order;
 
 namespace Ecommerce.Public;
 
@@ -28,5 +29,8 @@ public class EcommercePublicApplicationAutoMapperProfile : Profile
         //Product attribute
         CreateMap<ProductAttribute, ProductAttributeDto>();
         CreateMap<ProductAttribute, ProductAttributeInListDto>();
+
+        //Order
+        CreateMap<Orders.Order, OrderDto>();
     }
 }

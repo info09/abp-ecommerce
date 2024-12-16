@@ -80,12 +80,16 @@ namespace Ecommerce.Public.Web.Pages.Cart
         public async Task<IActionResult> OnPostAsync()
         {
             var cart = HttpContext.Session.GetString(EcommerceConsts.Cart);
-            var productCarts = JsonSerializer.Deserialize<Dictionary<string, CartItem>>(cart);
-            foreach (var item in productCarts)
+            var productCarts = new Dictionary<string, CartItem>();
+            if (cart != null)
             {
-                var cartItem = CartItems.FirstOrDefault(x => x.Product.Id == item.Value.Product.Id);
-                cartItem.Product = await _productsAppService.GetAsync(cartItem.Product.Id);
-                item.Value.Quantity = cartItem != null ? cartItem.Quantity : 0;
+                productCarts = JsonSerializer.Deserialize<Dictionary<string, CartItem>>(cart);
+                foreach (var item in productCarts)
+                {
+                    var cartItem = CartItems.FirstOrDefault(x => x.Product.Id == item.Value.Product.Id);
+                    cartItem.Product = await _productsAppService.GetAsync(cartItem.Product.Id);
+                    item.Value.Quantity = cartItem != null ? cartItem.Quantity : 0;
+                }
             }
             HttpContext.Session.SetString(EcommerceConsts.Cart, JsonSerializer.Serialize(productCarts));
             return Redirect("/shop-cart.html");
