@@ -20,9 +20,6 @@
                 <div class="box-carts">
                     <div class="head-wishlist">
                         <div class="item-wishlist">
-                            <div class="wishlist-cb">
-                                <input class="cb-layout cb-all" type="checkbox">
-                            </div>
                             <div class="wishlist-product"><span class="font-md-bold color-brand-3">Product</span></div>
                             <div class="wishlist-price"><span class="font-md-bold color-brand-3">Unit Price</span></div>
                             <div class="wishlist-status"><span class="font-md-bold color-brand-3">Quantity</span></div>
@@ -34,13 +31,16 @@
                         <div class="content-wishlist mb-20">
                             @for (int i = 0; i < Model.CartItems.Count; i++)
                             {
+                                var url = $"/products/{Model.CartItems[i].Product.CategorySlug}/{Model.CartItems[i].Product.Slug}.html";
                                 <div class="item-wishlist">
-                                    <div class="wishlist-cb">
-                                        <input class="cb-layout cb-select" type="checkbox">
-                                    </div>
+
                                     <div class="wishlist-product">
                                         <div class="product-wishlist">
-                                            <div class="product-image"><a href="shop-single-product.html"><img src="assets/imgs/page/product/img-sub.png" alt="Ecom"></a></div>
+                                            <div class="product-image">
+                                                <a href="@url">
+                                                    <img src="assets/imgs/page/product/img-sub.png" alt="Ecom">
+                                                </a>
+                                            </div>
                                             <div class="product-info">
                                                 <a href="shop-single-product.html">
                                                     <h6 class="color-brand-3">@Model.CartItems[i].Product.Name</h6>
@@ -52,7 +52,7 @@
                                         </div>
                                     </div>
                                     <div class="wishlist-price">
-                                        <h4 class="color-brand-3">@Model.CartItems[i].Product.SellPrice</h4>
+                                        <h4 class="color-brand-3">@Model.CartItems[i].Product.SellPrice.ToString("N0")</h4>
                                     </div>
                                     <div class="wishlist-status">
                                         <div class="box-quantity">
@@ -62,7 +62,7 @@
                                         </div>
                                     </div>
                                     <div class="wishlist-action">
-                                        <h4 class="color-brand-3">@Model.CartItems[i].Product.SellPrice</h4>
+                                        <h4 class="color-brand-3">@Model.CartItems.Sum(x => x.Product.SellPrice * x.Quantity).ToString("N0")</h4>
                                     </div>
                                     <div class="wishlist-remove"><a class="btn btn-delete" href="/shop-cart.html?action=remove&id=@Model.CartItems[i].Product.Id"></a></div>
                                 </div>
@@ -114,7 +114,7 @@
                         <div class="row">
                             <div class="col-6"><span class="font-md-bold color-gray-500">Subtotal</span></div>
                             <div class="col-6 text-end">
-                                <h4>@Model.CartItems.Sum(x => x.Product.SellPrice * x.Quantity).ToString()</h4>
+                                <h4>@Model.CartItems.Sum(x => x.Product.SellPrice * x.Quantity).ToString("N0")</h4>
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                         <div class="row">
                             <div class="col-6"><span class="font-md-bold color-gray-500">Total</span></div>
                             <div class="col-6 text-end">
-                                <h4>	@Model.CartItems.Sum(x => x.Product.SellPrice * x.Quantity).ToString()</h4>
+                                <h4>	@Model.CartItems.Sum(x => x.Product.SellPrice * x.Quantity).ToString("N0")</h4>
                             </div>
                         </div>
                     </div>
