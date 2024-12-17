@@ -1,3 +1,4 @@
+﻿using Ecommerce.Emailing;
 using Ecommerce.Public.Order;
 using Ecommerce.Public.Web.Extensions;
 using Ecommerce.Public.Web.Models;
@@ -6,18 +7,28 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Volo.Abp.Emailing;
+using Volo.Abp.Settings;
+using Volo.Abp.TextTemplating;
 
 namespace Ecommerce.Public.Web.Pages.Cart
 {
     public class CheckoutModel : PageModel
     {
         private readonly IOrderAppService _orderAppService;
+        private readonly IEmailSender _emailSender;
+        private readonly ITemplateRenderer _templateRenderer;
+        private readonly ISettingProvider _settingProvider;
 
-        public CheckoutModel(IOrderAppService orderAppService)
+        public CheckoutModel(IOrderAppService orderAppService, IEmailSender emailSender, ITemplateRenderer templateRenderer, ISettingProvider settingProvider)
         {
             _orderAppService = orderAppService;
+            _emailSender = emailSender;
+            _templateRenderer = templateRenderer;
+            _settingProvider = settingProvider;
         }
 
         public List<CartItem> CartItems { get; set; }
@@ -60,7 +71,28 @@ namespace Ecommerce.Public.Web.Pages.Cart
             CartItems = GetCartItems();
             HttpContext.Session.Remove(EcommerceConsts.Cart);
             if (order != null)
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var email = User.GetSpecificClaim(ClaimTypes.Email);
+                    var emailBody = await _templateRenderer.RenderAsync(
+                        EmailTemplates.CreateOrderEmail,
+                        new
+                        {
+                            message = "Create order success"
+                        });
+                    try
+                    {
+                        await _emailSender.SendAsync(email, "Tạo đơn hàng thành công", emailBody);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+                }
                 CreateStatus = true;
+            }
             else
                 CreateStatus = false;
         }
@@ -74,6 +106,11 @@ namespace Ecommerce.Public.Web.Pages.Cart
                 productCarts = JsonSerializer.Deserialize<Dictionary<string, CartItem>>(cart);
             }
             return productCarts.Values.ToList();
+        }
+
+        public async Task<string> GetSmtpPasswordAsync()
+        {
+            return await _settingProvider.GetOrNullAsync("Abp.Mailing.Smtp.Password");
         }
     }
 }
